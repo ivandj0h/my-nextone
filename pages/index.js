@@ -1,31 +1,33 @@
-// pages/index.js
-import React from 'react';
+import { useEffect, useState } from 'react';
+import fs from 'fs';
+import path from 'path';
 
-const HomePage = ({ posts }) => {
-    return (
-        <div>
-            <h1>Posts from JSONPlaceholder</h1>
-            <ul>
-                {posts.map((post) => (
-                    <li key={post.id}>
-                        <h3>{post.title}</h3>
-                        <p>{post.body}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-export async function getServerSideProps() {
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const posts = await res.json();
+export async function getStaticProps() {
+    const filePath = path.join(process.cwd(), 'data.json');
+    const jsonString = fs.readFileSync(filePath, 'utf8');
+    const jsonContent = JSON.parse(jsonString);
 
     return {
         props: {
-            posts,
+            text: jsonContent.text,
         },
     };
 }
 
-export default HomePage;
+function Home({ text }) {
+    const [updatedString, setUpdatedString] = useState('');
+
+    useEffect(() => {
+        const updated = text.replace(/(<ads><\/ads>)/, '<ads>haha</ads>');
+        setUpdatedString(updated);
+    }, [text]);
+
+    return (
+        <div>
+            <h1>Updated String:</h1>
+            <p>{updatedString}</p>
+        </div>
+    );
+}
+
+export default Home;

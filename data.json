@@ -1,3 +1,10 @@
-{
-  "text": "This is an example string with <ads></ads> tag."
-}
+[
+  {
+    "id": 1,
+    "text": "This is an example string with <ads></ads> tag."
+  },
+  {
+    "id": 2,
+    "text": "Another example string with <ads></ads> tag."
+  }
+]
